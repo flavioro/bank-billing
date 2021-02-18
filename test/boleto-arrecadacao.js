@@ -1,9 +1,10 @@
 const { assert } = require("../node_modules/chai/chai");
+
 const {
   boletoArrecadacao,
   boletoArrecadacaoCodigoBarras,
   boletoArrecadacaoLinhaDigitavel,
-} = require("../src/boleto-arrecadacao");
+} = require("../src/modules/billing/services/boleto-arrecadacao.mjs");
 
 describe("Validar Boletos de Arrecadação", () => {
   it("validação da linha digitável do boleto de arrecadação válido módulo 10 com máscara", () => {

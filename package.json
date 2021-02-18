@@ -5,14 +5,18 @@
   "main": "src/shared/server.mjs",
   "license": "MIT",
   "scripts": {
+    "test": "mocha --require babel-polyfill --require babel-register && eslint ./src/*",
     "dev": "nodemon --experimental-modules"
   },
   "dependencies": {
-    "chai": "^4.3.0",
     "express": "^4.17.1",
     "moment": "^2.29.1"
   },
   "devDependencies": {
+    "chai": "^4.3.0",
+    "mocha": "^8.3.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-config-standard": "^16.0.2",
