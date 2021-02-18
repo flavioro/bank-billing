@@ -1,6 +1,7 @@
 import { modulo10, modulo11Arrecadacao } from "./modulo.mjs";
 import { convertToBoletoArrecadacaoCodigoBarras } from "./conversor.mjs";
 import clearMask from "../../../shared/tools/clearMask.mjs";
+import moment from "moment";
 
 export function boletoArrecadacaoCodigoBarras(codigo) {
   const cod = clearMask(codigo);
@@ -15,12 +16,14 @@ export function boletoArrecadacaoCodigoBarras(codigo) {
   return modulo(bloco) === DV;
 }
 
-export function boletoArrecadacaoLinhaDigitavel(codigo, validarBlocos = false) {
+export function boletoArrecadacaoLinhaDigitavel(codigo, validarBlocos = true) {
   const cod = clearMask(codigo);
   if (!/^[0-9]{48}$/.test(cod) || Number(cod[0]) !== 8) return false;
   const barCode = convertToBoletoArrecadacaoCodigoBarras(cod);
   const validDV = boletoArrecadacaoCodigoBarras(barCode);
-  if (!validarBlocos) return validDV;
+  //    836200000005667800481000180975657313001589636081
+  //     83620000000667800481001809756573100158963608
+  // if (!validarBlocos) return validDV;
   const codigoMoeda = Number(cod[2]);
   let modulo;
   if (codigoMoeda === 6 || codigoMoeda === 7) modulo = modulo10;
@@ -36,7 +39,25 @@ export function boletoArrecadacaoLinhaDigitavel(codigo, validarBlocos = false) {
   });
   const validBlocos = blocos.every((e) => modulo(e.num) === Number(e.DV));
   // return validBlocos && validDV;
-  return barCode;
+
+  let strValue = barCode.substring(5, 15); // Valor nominal
+  strValue += "+";
+  const value = strValue
+    .replace(strValue.slice(-3), `.${strValue.slice(-3)}`)
+    .replace("+", "");
+  const amount = parseFloat(value).toFixed(2);
+  // 24 - 31
+
+  const date = barCode.substring(19, 27); //  Vencimento
+
+  const dateLast = moment(date, "YYYYMMDD").format("YYYY-MM-DD");
+  // moment("20111031", "YYYYMMDD").fromNow();
+  const returnBilling = {
+    barCode,
+    amount,
+    expirationDate: dateLast,
+  };
+  return returnBilling;
 }
 
 export function boletoArrecadacao(codigo, validarBlocos = false) {

@@ -1,18 +1,11 @@
-// import { boletoBancarioLinhaDigitavel } from "../services/boleto-bancario.mjs";
 import { boleto } from "../services/boleto.mjs";
-// const {
-//   boletoBancario,
-//   boletoBancarioCodigoBarras,
-//   boletoBancarioLinhaDigitavel,
-// } = require("../services/boleto-bancario.mjs");
 
-export default class ProjetoController {
+export default class BillingController {
   async show(request, response) {
     const { billing } = request.params;
-    // console.log(billing);
 
-    const projeto = await boleto(billing);
+    const _billing = await boleto(billing);
 
-    return response.json(projeto);
+    return response.json(_billing);
   }
 }

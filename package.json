@@ -8,6 +8,7 @@
     "dev": "nodemon --experimental-modules"
   },
   "dependencies": {
+    "chai": "^4.3.0",
     "express": "^4.17.1",
     "moment": "^2.29.1"
   },
